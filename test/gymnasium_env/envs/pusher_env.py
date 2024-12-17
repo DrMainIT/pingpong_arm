@@ -172,7 +172,7 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
         self,
         #xml_file: str = "pusher_v5.xml",
         #xml_file: str = "/Users/francesco/Desktop/pingpong/urdf/braccioLight/mjmodel.xml",
-        xml_file: str = "/Users/francesco/Desktop/pingpong/urdf/braccioLight/test2.xml",
+        xml_file: str = "/Users/francesco/Desktop/pingpong/urdf/braccioLight/pongace.xml",
         frame_skip: int = 5,
         default_camera_config: Dict[str, Union[float, int]] = DEFAULT_CAMERA_CONFIG,
         reward_near_weight: float = 0.5,

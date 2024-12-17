@@ -1,0 +1,31 @@
+<mujoco model="bro">
+<compiler inertiafromgeom="true" angle="radian" coordinate="local"/>
+<option timestep="0.01" gravity="0 0 -9.81" iterations="20" integrator="Euler" />
+
+<default>
+<geom  solimp="1 1 0.01" solref="0.01 0.5"/>
+</default>
+  <asset>
+    <texture name="texplane" type="2d" builtin="checker" rgb1=".2 .3 .4" rgb2=".1 0.15 0.2" width="512" height="512"/>
+    <material name="MatPlane" texture="texplane" texrepeat="1 1" texuniform="true"/>
+  </asset>
+
+
+
+<worldbody>
+
+<light diffuse=".5 .5 .5" dir="0 0 -1" pos="0 0 3"/>
+<geom name="table" condim="3" size="4 2.3 0.05" pos="3 0 0" type="plane"  material="MatPlane"/>
+
+
+<body name="object" pos="7 0 3">
+
+<joint name="object\_joint" type="free" damping="0.001"/>
+<geom name="object\_geom" size="0.05" rgba="1 0 0 1" type="sphere" mass="0.027" />
+
+</body>
+
+</worldbody>
+
+</mujoco>
+

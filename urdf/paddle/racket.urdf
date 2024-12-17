@@ -1,0 +1,23 @@
+<robot name="ping_pong_racket">
+  <link name="racket">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/> <!-- Rotate 90° (1.5708 rad) around the X-axis -->
+      <geometry>
+        <mesh filename="/Users/francesco/Desktop/pingpong/urdf/paddle/Racket.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="custom_color">
+        <color rgba="1.0 0.0 0.0 1.0"/> <!-- Red color (RGBA: red, green, blue, alpha) -->
+      </material>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="1.5708 0 0"/> <!-- Rotate 90° (1.5708 rad) around the X-axis -->
+      <geometry>
+        <mesh filename="/Users/francesco/Desktop/pingpong/urdf/paddle/Racket.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.1" iyy="0.1" izz="0.1" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+</robot>

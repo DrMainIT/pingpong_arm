@@ -1,0 +1,59 @@
+<mujoco model="umirobot_l1">
+  <compiler angle="radian"/>
+
+  <option timestep="0.01"/>
+
+  <visual>
+    <global azimuth="180" elevation="90"/>
+  </visual>
+
+  
+
+  <asset>
+    <texture type="2d" name="texplane" builtin="checker" rgb1="0.2 0.3 0.4" rgb2="0.1 0.15 0.2" width="512" height="512"/>
+    <material name="MatPlane" texture="texplane" texuniform="true"/>
+    <mesh name="piece1" file="piece1.stl" scale="0.01 0.01 0.01"/>
+    <mesh name="piece2" file="piece2.stl" scale="0.01 0.01 0.01"/>
+    <mesh name="piece3" file="piece3.stl" scale="0.01 0.01 0.01"/>
+    <mesh name="piece4" file="piece4.stl" scale="0.01 0.01 0.01"/>
+    <mesh name="endEffector" file="endEffector.stl" scale="0.5 0.5 0.5"/>
+    <mesh name="plane_mesh" file="/Users/francesco/Desktop/pingpong/urdf/table/tavoloGirato.stl" scale="2 2 2"/>
+  </asset>
+
+  <worldbody>
+    <geom name="ground" size="4 2.3 0.05" pos="3 0 0" type="plane" solref="0.01 0.5" material="MatPlane"/>
+    <camera name="main_camera" pos="0 0 0"/>
+    <body name="object" pos="5 0 2">
+      <joint name="object\_joint" type="free" damping="0.001"/>
+      <geom name="object_geom" size="0.027" rgba="1 0 0 1"/>
+    </body>
+
+    <body name="goal" pos="3.5 -1.05 0">
+      <joint name="goal_joint_x" type="slide" axis="1 0 0" range="-3 3" damping="0.001"/>
+      <!-- Giunto Slide sull'asse Y -->
+      <joint name="goal_joint_y" type="slide" axis="0 1 0" range="-3 3" damping="0.001"/>
+      <geom rgba="1 0 0 1" type="box" size="0.58 0.501 0.01" solref="0.01 0.5" density='0.00001' contype="0" conaffinity="0"/> 
+    </body>
+    <geom name="umirobot_l1" pos="0 0 0" quat="1 -1.73205e-07 -1.73205e-07 -1.73205e-07" type="mesh" mesh="piece1"/>
+    <body name="umirobot_l2_cover" pos="-0.1 0 0.6" quat="1 -1.73205e-07 -1.73205e-07 -1.73205e-07">
+      <inertial pos="0.1 0 0.4" mass="1" diaginertia="0.01 0.01 0.01"/>
+      <joint name="Revolute_joint" pos="0 0 0" axis="0 0 1"/>
+      <geom name="umirobot_l2_cover" pos="0.1 0 0.4" quat="0 1 -1.73205e-07 1.73205e-07" type="mesh" mesh="piece2"/>
+      <body name="umirobot_l3" pos="0 0.075 0.2" quat="-0.707107 -0.707107 0 -2.44949e-07">
+        <inertial pos="0 1 -0.225" mass="1" diaginertia="0.01 0.01 0.01"/>
+        <joint name="joint2" pos="0 0 0" axis="0 0 1" range="-1.5708 1.5708" actuatorfrcrange="-20.5 20.5"/>
+        <geom name="umirobot_l3" pos="0 1 -0.225" quat="-1.22475e-07 -1.22474e-07 -0.707107 0.707107" type="mesh" mesh="piece3"/>
+        <body name="umirobot_l4" pos="0 0.8 -0.175" quat="1 1.73205e-07 -1.73205e-07 1.73205e-07">
+          <inertial pos="-0.75 -1.4 0" mass="1" diaginertia="0.01 0.01 0.01"/>
+          <joint name="Revolute_joint_2" pos="0 0 0" axis="0 0 1" range="-1.5708 1.5708" actuatorfrcrange="-20.5 20.5"/>
+          <geom name="umirobot_l4" pos="-0.75 -1.4 0" quat="1 1.73205e-07 -1.73205e-07 1.73205e-07" type="mesh" mesh="piece4"/>
+          <body name="r_elbow_flex_link" pos="1.2 0.02 0.17" quat="0.5 0.5 0.5 0.5">
+            <inertial pos="0.01 -0.12 0.25" mass="1" diaginertia="0.01 0.01 0.01"/>
+            <joint name="Revolute_joint_3" pos="0 0 0" axis="0 0 1" range="0 3.14" actuatorfrcrange="-20.5 20.5"/>
+            <geom name="r_elbow_flex_link" pos="0.07 0.756776 -0.563749" quat="0.5 0.5 -0.5 0.5" type="mesh" mesh="endEffector"/>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+</mujoco>

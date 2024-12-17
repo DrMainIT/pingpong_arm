@@ -1,0 +1,63 @@
+<mujoco model="pongace">
+  <compiler inertiafromgeom="true" angle="radian" coordinate="local"/>
+  <option timestep="0.01" gravity="0 0 -9.81" iterations="20" integrator="Euler" />
+
+  
+  <default>
+    <geom friction="0.5" solimp="0.99 0.99 0.01" solref="0.01 0.5"/>
+  </default>
+  <asset>
+    <texture name="texplane" type="2d" builtin="checker" rgb1=".2 .3 .4" rgb2=".1 0.15 0.2" width="512" height="512"/>
+    <material name="MatPlane" texture="texplane" texrepeat="1 1" texuniform="true"/>
+
+    <mesh name="piece1" file="piece1.stl" scale="0.01 0.01 0.01"/>
+    <mesh name="piece2" file="piece2.stl" scale="0.01 0.01 0.01"/>
+    <mesh name="piece3" file="piece3.stl" scale="0.01 0.01 0.01"/>
+    <mesh name="piece4" file="piece4.stl" scale="0.01 0.01 0.01"/>
+    <mesh name="endEffector" file="endEffector.stl" scale="0.5 0.5 0.5"/>
+  </asset>
+  <worldbody>
+    <light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1"/>
+    <light diffuse=".5 .5 .5" pos="6 0 3" dir="0 0 -1"/>
+    <geom name="table" condim="3" size="4 2.3 0.05" pos="3 0 0" type="plane"  material="MatPlane"/>
+    <body name="object" pos="5.3 0 3" >
+      <joint name="object\_joint" type="free"/>
+      <geom name="object\_geom" size="0.05" rgba="1 0 0 1" type="sphere" mass="0.027" />
+    </body>
+    <body name="r_shoulder_pan_link" pos="0 -0.6 0">
+      <geom name="umirobot_l1" pos="0 0 0" quat="1 -1.73205e-07 -1.73205e-07 -1.73205e-07" type="mesh" mesh="piece1"/>
+      <body name="r_shoulder_lift_link" pos="-0.1 0 0.6">
+        <geom name="umirobot_l2_cover" pos="0.1 0 0.4" quat="0 1 -1.73205e-07 1.73205e-07" type="mesh" mesh="piece2"/>
+        <joint name="r_shoulder_lift_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-2.2854 1.714602" damping="1.0" />
+        <body name="r_upper_arm_roll_link" pos="0 0.075 0.2" quat="-0.707107 -0.707107 0 -2.44949e-07">
+          <geom name="umirobot_l3" pos="0 1 -0.225" quat="-1.22475e-07 -1.22474e-07 -0.707107 0.707107" type="mesh" mesh="piece3" />
+          <joint name="r_upper_arm_roll_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-1.5708 1.5708" damping="0.1" />
+          <body name="r_upper_arm_link" pos="0 0.8 -0.175" quat="1 1.73205e-07 -1.73205e-07 1.73205e-07">
+            <geom name="umirobot_l4" pos="-0.75 -1.4 0" quat="1 1.73205e-07 -1.73205e-07 1.73205e-07" type="mesh" mesh="piece4"/>
+            <joint name="r_elbow_flex_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-0.33 1.57" damping="0.1" />
+            <body name="r_elbow_flex_link" pos="1.2 0.02 0.17" quat="0.5 0.5 0.5 0.5">
+              <joint name="Revolute_joint_3" type="hinge" pos="0 0 0" axis="0 0 1" range="0 3.14" damping="0.1"  actuatorfrcrange="-20.5 20.5"/>
+              <body name="end_effector" pos="0.07 0.756776 -0.563749">
+                <geom name="tips_arm" quat="0.5 0.5 -0.5 0.5" type="mesh" mesh="endEffector"/>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+
+    <body name="goal" pos="6.0 0.05 0.0030">
+      <joint name="goal_joint_x" type="slide" axis="1 0 0" range="-3 3" damping="0.001"/>
+      <!-- Giunto Slide sull'asse Y -->
+      <joint name="goal_joint_y" type="slide" axis="0 1 0" range="-3 3" damping="0.001"/>
+      <geom rgba="1 0 0 1" type="box" size="1.5 2.31 0.01" density='0.00001' contype="0" conaffinity="0"/> 
+    </body>
+  </worldbody>
+
+  <actuator>
+    <motor joint="r_shoulder_lift_joint" ctrlrange="-30.0 30.0" gear="200" ctrllimited="true" />
+    <motor joint="r_upper_arm_roll_joint" ctrlrange="-30.0 30.0" gear="200" ctrllimited="true" />
+    <motor joint="r_elbow_flex_joint" ctrlrange="-30.0 30.0" gear="200" ctrllimited="true" />
+    <motor joint="Revolute_joint_3" ctrlrange="-30.0 30.0" gear="200" ctrllimited="true" />
+  </actuator>
+</mujoco>

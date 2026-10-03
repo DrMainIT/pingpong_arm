@@ -14,7 +14,7 @@ def main():
     parser.add_argument("--enable-motors", action="store_true", help="Send returned actions to configured GPIO servos")
     args = parser.parse_args()
     url = os.environ.get("PINGPONG_INFERENCE_URL", "http://127.0.0.1:8000/process-data")
-    observation = [[0.3, 1.0, 4.5, 0.0, 0.0, 0.0, 2.10034773, -0.56972212, 1.62007707]]
+    observation = [[0.0] * 23]  # Shape matches the current PingPongEnv observation
     response = requests.post(url, json={"observation": observation}, timeout=10)
     response.raise_for_status()
     result = response.json()

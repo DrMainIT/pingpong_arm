@@ -1,21 +1,8 @@
-"""
-python -m rl_zoo3.enjoy --algo ppo --env gymnasium_env/PingPongEnv-v0 -f logs/ --exp-id 0
-python -m rl_zoo3.train --algo ppo --env gymnasium_env/PingPongEnv-v0 --tensorboard-log ./logs/ppo/tensorboard_log --conf-file pingpong.yml -P
-"""
-
-"""
-qpos =
-x ball position
-y ball position
-z ball position
-
-
-"""
+"""MuJoCo environment for training a robot arm to return a ping pong ball."""
 from pathlib import Path
 from typing import Dict, Union
 
 import numpy as np
-from icecream import ic
 from gymnasium import utils
 from gymnasium.envs.mujoco import MujocoEnv
 from gymnasium.spaces import Box
@@ -23,7 +10,7 @@ from gymnasium.spaces import Box
 
 DEFAULT_CAMERA_CONFIG = {
     "distance": 2.0,
-    "lookat": np.array((0.5,0,0)),
+    "lookat": np.array((0.5, 0, 0)),
     "elevation": -40,
 }
 
@@ -39,8 +26,7 @@ class PingPongEnv(MujocoEnv, utils.EzPickle):
 
     def __init__(
         self,
-        #xml_file: str = "pusher_v5.xml",
-        xml_file: str = str(Path(__file__).resolve().parents[3] / "urdf" / "braccioLight" / "pongace.xml"),
+        xml_file: str = str(Path(__file__).resolve().parents[2] / "urdf" / "braccioLight" / "pongace.xml"),
         frame_skip: int = 5,
         default_camera_config: Dict[str, Union[float, int]] = DEFAULT_CAMERA_CONFIG,
         reward_near_weight: float = 0.5,
@@ -61,9 +47,6 @@ class PingPongEnv(MujocoEnv, utils.EzPickle):
         self._reward_near_weight = reward_near_weight
         self._reward_control_weight = reward_control_weight
         self._reward_dist_weight = reward_dist_weight
-        self.step_counter = 0
-        self._hitted = False # Flag per il controllo della collisione
-        self._gravity = False
         self.stop = False
         self.count_hit = 0
         low = np.full(23, -np.inf)
@@ -88,7 +71,6 @@ class PingPongEnv(MujocoEnv, utils.EzPickle):
                 "human",
                 "rgb_array",
                 "depth_array",
-
             ],
             "render_fps": int(np.round(1.0 / self.dt)),
         }
@@ -104,8 +86,7 @@ class PingPongEnv(MujocoEnv, utils.EzPickle):
 
         ball_pos = self.get_body_com("ball")
         truncation = False
-        # ball position box limits
-        limits = [[-1,8],[-2,2],[-1,6]]
+        limits = ((-1, 8), (-2, 2), (-1, 6))
         for i in range(3):
             if ball_pos[i] < limits[i][0] or ball_pos[i] > limits[i][1]:
                 # if the arm hit the ball not in the goal reward is negative
@@ -115,7 +96,7 @@ class PingPongEnv(MujocoEnv, utils.EzPickle):
 
 
 
-        self.step_count += 1  # increase step counter
+        self.step_count += 1
         if self.stop:
             truncation = True
             self.stop = False
@@ -130,16 +111,13 @@ class PingPongEnv(MujocoEnv, utils.EzPickle):
         reward_near = -np.linalg.norm(vec_1) * self._reward_near_weight
         reward_dist = -np.linalg.norm(vec_2) * self._reward_dist_weight
         reward_ctrl = -np.square(action).sum() * self._reward_control_weight
-
-
-        reward = reward_ctrl + reward_near +reward_dist
+        reward = reward_ctrl + reward_near + reward_dist
         if np.linalg.norm(vec_1) < 0.3:
             self.count_hit += 1
             reward += 100
         if np.linalg.norm(vec_2) < 1.5:
             reward += 10
 
-        elbow_pos = self.get_body_com("racket_center")
         ball_pos = self.get_body_com("ball")
         goal_pos = self.get_body_com("goal")
 
@@ -147,44 +125,7 @@ class PingPongEnv(MujocoEnv, utils.EzPickle):
             reward += 200
             print("Reward!")
             self.stop = True
-        # Calcola le distanze
-        #distance_elbow_to_object = np.linalg.norm(elbow_pos - ball_pos)
-        #distance_object_to_goal = np.linalg.norm(ball_pos - goal_pos)
-        # Calcola la variazione della distanza tra l'oggetto e il goal
-        #if hasattr(self, 'previous_distance_object_to_goal'):
-        #    delta_distance_object_to_goal = self.previous_distance_object_to_goal - distance_object_to_goal
-        #else:
-        #    delta_distance_object_to_goal = 0
-
-        # Penalità per la staticità
-        #joint_velocities = self.data.qvel
-        #static_penalty =  np.sum(np.abs(joint_velocities)) * 0.1
-
-        # Funzione di ricompensa: penalizza le distanze maggiori e premia la riduzione della distanza
-        #reward = - (distance_elbow_to_object + distance_object_to_goal) + delta_distance_object_to_goal + static_penalty
-        #reward = - distance_elbow_to_object * 10 - distance_object_to_goal * 10
-        #reward = - distance_elbow_to_object  * 0.1
-
-        # Aggiorna la distanza precedente
-        #self.previous_distance_object_to_goal = distance_object_to_goal
-
-        #if self._gravity:
-        #    self.model.opt.gravity[:] = [0, 0, -9.81]
-
-        #if distance_elbow_to_object < 0.3:
-        #    self.count_hit += 1
-        #    print("hit")
-        #    reward += 75
-
-        #
-        #if distance_object_to_goal < 1.51:
-        #    reward += 200
-
-        # Informazioni aggiuntive per il debug
         reward_info = {
-            #"distance_elbow_to_object": distance_elbow_to_object,
-            #"distance_object_to_goal": distance_object_to_goal,
-            #"delta_distance_object_to_goal": delta_distance_object_to_goal,
             "reward": reward,
             "hit_count": self.count_hit,
         }
@@ -195,19 +136,12 @@ class PingPongEnv(MujocoEnv, utils.EzPickle):
         self.step_count = 0
         qpos = self.init_qpos
         qvel = self.init_qvel
-        #pos_z = np.random.rand() * 3
-        #pos_y = 0.8
         pos_y = np.random.rand() * 2
-        #pos_y = 0
         pos_x = 6.5
-        #pos_y = -0.5
-        #pos_y = 1.10
         pos_z = 4.5
         qpos[0] = pos_x
         qpos[1] = pos_y
         qpos[2] = pos_z
-        #self.model.opt.gravity[:] = [0, 0, 0]
-
         qvel[0] = -5
         self.set_state(qpos, qvel)
         return self._get_obs()
@@ -215,8 +149,8 @@ class PingPongEnv(MujocoEnv, utils.EzPickle):
     def _get_obs(self):
         obs = np.concatenate(
             [
-                self.data.qpos.flatten()[:7],#[:3],
-                self.data.qvel.flatten()[:7],#[:3],
+                self.data.qpos.flatten()[:7],
+                self.data.qvel.flatten()[:7],
                 self.get_body_com("racket_center"),
                 self.get_body_com("ball"),
                 self.get_body_com("goal"),

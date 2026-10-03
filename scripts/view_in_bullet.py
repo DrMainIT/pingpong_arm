@@ -3,6 +3,8 @@ import pybullet as p
 import pybullet_data
 import time
 
+REPO_ROOT = Path(__file__).resolve().parents[1]
+
 # Connect to PyBullet physics server
 p.connect(p.GUI)  # or p.GUI for graphical version
 
@@ -11,9 +13,9 @@ p.setAdditionalSearchPath(pybullet_data.getDataPath())
 
 # Set the gravity in the simulation
 p.setGravity(0, 0, -9.81)
-kuka_id = p.loadURDF(str(Path(__file__).resolve().parent / "urdf/braccioLight/braccioLight.urdf"), [0, 0, 0], useFixedBase=True)
-table_id = p.loadURDF("urdf/table/table.urdf", [3, 1, 0], useFixedBase=True, globalScaling=1.5)
-ball_id = p.loadURDF("urdf/ball.urdf", [2, 0, 1], useFixedBase=False)
+kuka_id = p.loadURDF(str(REPO_ROOT / "urdf/braccioLight/braccioLight.urdf"), [0, 0, 0], useFixedBase=True)
+table_id = p.loadURDF(str(REPO_ROOT / "urdf/table/table.urdf"), [3, 1, 0], useFixedBase=True, globalScaling=1.5)
+ball_id = p.loadURDF(str(REPO_ROOT / "urdf/ball.urdf"), [2, 0, 1], useFixedBase=False)
 # Load the KUKA IIWA model
 #kuka_id = p.loadURDF("kuka_iiwa/model.urdf", [0, 0, 0], useFixedBase=True)
 # Get the end-effector link index (KUKA IIWA's end effector is usually link 6)

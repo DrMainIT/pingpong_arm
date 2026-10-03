@@ -1,84 +1,88 @@
-# Robot Table Tennis: Simulation, Reinforcement Learning, and ONNX Deployment
+# Robot Table Tennis with Reinforcement Learning
 
-An experimental project exploring whether a tabletop robot arm could learn to return a ping pong ball. The work combines custom MuJoCo robot and table models, a Gymnasium environment, PPO policy training, ONNX export, and an early remote-inference-to-motor-control prototype.
+An experimental project exploring whether a tabletop robot arm could learn to return a ping pong ball. It combines a custom MuJoCo scene and Gymnasium environment with PPO training, ONNX policy exports, and an early remote-inference-to-motor-control prototype.
 
-**Status: research prototype.** I built and iterated the simulation, trained and evaluated PPO policies, exported policies to ONNX, and explored an inference service and Raspberry Pi motor client. I did not achieve reliable rallies or a complete game against a person.
+**Status: unfinished research prototype.** I built and iterated the robot and table models, trained and evaluated many PPO runs, exported policies to ONNX, and experimented with remote inference and motor commands. I did not achieve reliable rallies or a complete game against a person.
 
 ## Simulation
 
-The project includes a simulated robot, racket, ball, and table, with geometry and scene definitions under `urdf/` and `stl/`.
+![Robot arm and ball in the simulated table-tennis scene](media/simulation-scene.png)
 
-![Robot arm and ball in the simulated table tennis scene](media/simulation-scene.png)
-
-The robot and racket geometry were iterated alongside the environment:
+The robot and racket geometry were iterated alongside the simulation:
 
 ![Robot arm and racket model](media/robot-racket-model.png)
 
-[Watch the early simulation screen recording](media/pingpong-simulation.mp4)
+[Watch the early simulation recording](media/pingpong-simulation.mp4)
 
-## What I built
+## Project highlights
 
-- **Robot and scene models:** URDF and MuJoCo XML assets for the arm, racket, ball, and table.
-- **Custom Gymnasium environments:** `PingPongEnv` and an earlier bouncing environment, with observations based on robot joint state and ball, racket, and target positions.
-- **PPO training experiments:** Stable-Baselines3 training, continuation, and evaluation scripts, with 60 archived ping pong runs, checkpoints, evaluation files, and TensorBoard events.
-- **ONNX inference path:** four exported PPO policy variants and ONNX Runtime inference code are included in `test/cloud_deployment/`.
-- **Remote inference prototype:** a FastAPI service loads an ONNX model and returns policy actions, with an optional end-effector calculation.
-- **Motor-control experiment:** a Raspberry Pi GPIO client explores forwarding policy actions to servo PWM outputs. It is a prototype and does not establish a validated real-time control loop.
-
-## Policy and deployment workflow
-
-```text
-MuJoCo simulation
-       ↓
-Gymnasium environment
-       ↓
-PPO training and evaluation
-       ↓
-ONNX export → ONNX Runtime inference
-       ↓
-FastAPI request/response prototype
-       ↓
-Raspberry Pi GPIO motor-control experiment
-```
-
-The ONNX and hardware stages are experiments toward deployment. Model input dimensions, action scaling, timing, servo calibration, and the full perception-to-control loop have not been validated together for reliable play.
+- Custom `PingPongEnv` environment in `gymnasium_env/`, with robot joint state, ball, racket, and target information in the observation.
+- PPO training and interactive policy playback from root-level `train.py` and `play.py`.
+- 60 archived ping pong training runs, including checkpoints, evaluation files, monitor logs, and TensorBoard event data under `results/ppo/`.
+- Four exported PPO policy variants and an ONNX Runtime inference service under `deployment/onnx/`.
+- A FastAPI inference experiment and Raspberry Pi GPIO client exploring how policy outputs could reach servo motors. The motor client is dry-run by default; the full real-time hardware loop was not validated.
+- URDF and MuJoCo XML robot, racket, ball, and table models under `urdf/` and mesh assets under `stl/`. An optional PyBullet model viewer is in `scripts/view_in_bullet.py`.
 
 ## Repository layout
 
 ```text
 .
-├── urdf/                         # Robot, racket, and table models
-├── stl/                          # Robot mesh assets
-├── media/                        # Simulation screenshots and recording
-└── test/
-    ├── gymnasium_env/            # Custom environments and wrappers
-    ├── logs/ppo/                 # Ping pong runs, checkpoints, and metrics
-    └── cloud_deployment/         # ONNX models, FastAPI, and Pi client prototype
+├── gymnasium_env/       # Project's custom Gymnasium environments
+├── train.py             # PPO training and optional checkpoint continuation
+├── play.py              # Interactive checkpoint playback
+├── scripts/             # Optional PyBullet viewer
+├── deployment/onnx/     # ONNX models, inference service, and Pi prototype
+├── results/
+│   ├── models/          # Curated checkpoints
+│   └── ppo/             # Archived runs, evaluations, and TensorBoard events
+├── media/               # Simulation recording and screenshots
+├── urdf/                # Robot, racket, and table descriptions
+└── stl/                 # Robot mesh assets
 ```
 
-The ping pong training runs are retained as experiment evidence. The separate air hockey environment and its runs were excluded from this repository's ping pong results.
+The ping pong project is kept separate from the air hockey experiments in the original workspace. Generic Gymnasium tutorial code and the unrelated demo notebook were removed from this repository layout.
 
-## Training and evaluation
+## Install
 
-The original training scripts and experiment settings are under `test/`. For example, `test/pong.py` trains a PPO policy in `gymnasium_env/PingPongEnv-v0`, and `test/continueTrain.py` continues from a saved checkpoint. `test/testModel.py` loads a checkpoint for interactive evaluation.
-
-To run the experiments, install the dependencies in `test/pyproject.toml` in an environment with MuJoCo's rendering dependencies available, then install the environment package from `test/`:
+Python 3.10 or newer is recommended. From the repository root:
 
 ```bash
-cd test
 python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
 python -m pip install --upgrade pip
 python -m pip install -e .
-python pong.py
 ```
 
-Some of the preserved scripts are exploratory and may require adapting training settings or checkpoint paths for your machine. The archived models and TensorBoard event files document prior runs; they are not a promise of successful game play.
+MuJoCo's viewer also needs a working graphics environment.
 
-## ONNX inference prototype
+## Train
 
-See [`test/cloud_deployment/README.md`](test/cloud_deployment/README.md) for the FastAPI and ONNX Runtime experiment. The export exploration also referenced the [SB3-to-Coral example](https://github.com/chunky/sb3_to_coral). Select an export with `ONNX_MODEL_PATH` and configure the client endpoint with `PINGPONG_INFERENCE_URL`. The Raspberry Pi client runs in dry-run mode unless `--enable-motors` is supplied.
+```bash
+python train.py --timesteps 100000 --envs 4 --seed 0
+```
+
+The new run, normalization statistics, and TensorBoard logs are saved to `results/current_run/`. To continue from a Stable-Baselines3 checkpoint:
+
+```bash
+python train.py --resume results/models/ppo_pingpong_run_60_best.zip --timesteps 100000
+```
+
+If the checkpoint was trained with observation/reward normalization, pass its saved statistics with `--normalization path/to/vecnormalize.pkl`.
+
+## Play a saved policy
+
+The default is the best checkpoint from archived run 60:
+
+```bash
+python play.py
+```
+
+Choose another Stable-Baselines3 checkpoint with `--model path/to/model.zip`. If the run used `VecNormalize`, also pass `--normalization path/to/vecnormalize.pkl`.
+
+## ONNX and hardware experiments
+
+See [`deployment/onnx/README.md`](deployment/onnx/README.md) for the local FastAPI/ONNX Runtime prototype and the experimental Raspberry Pi client. The deployment artifacts show an inference and motor-command exploration; they do not demonstrate reliable or safe human-versus-robot play.
 
 ## What I learned
 
-Teaching a robot to play table tennis requires more than producing arm motion: the agent must predict a fast ball, time contact, learn a useful return, and translate simulated actions into calibrated hardware commands. This project produced a working experimental foundation across robot modeling, custom RL environments, PPO training, ONNX export, and deployment prototyping, while exposing the remaining gap between simulation experiments and reliable human-versus-robot play.
+Table tennis is a difficult contact-rich control problem: the policy must predict a fast ball, time a strike, produce a useful return, and map simulation actions onto calibrated hardware. The project gave me hands-on work in robot modeling, custom RL environments, PPO training, model export, and deployment prototyping, while making clear how much remained between simulation experiments and reliable play.

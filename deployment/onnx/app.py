@@ -38,7 +38,17 @@ async def read_root():
 @app.post("/process-data")
 async def process_data(request: InferenceRequest):
     observation = np.asarray(request.observation, dtype=np.float32)
-    input_name = SESSION.get_inputs()[0].name
+    model_input = SESSION.get_inputs()[0]
+    input_name = model_input.name
+    expected_shape = model_input.shape
+    if observation.ndim != len(expected_shape) or any(
+        isinstance(size, int) and size > 0 and observation.shape[index] != size
+        for index, size in enumerate(expected_shape)
+    ):
+        raise HTTPException(
+            status_code=422,
+            detail=f"Observation shape {observation.shape} does not match model input {expected_shape}",
+        )
     try:
         outputs = SESSION.run(None, {input_name: observation})
     except Exception as exc:

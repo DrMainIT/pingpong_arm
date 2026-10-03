@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pingpong-arm-rl"
-version = "0.1.0"
-description = "Experimental PPO training environment for a simulated table-tennis robot arm"
+version = "0.2.0"
+description = "PPO experiments for a MuJoCo table-tennis robot arm"
 requires-python = ">=3.10"
 dependencies = [
   "gymnasium>=0.29,<1.2",
@@ -15,8 +15,10 @@ dependencies = [
   "stable-baselines3>=2.3,<3",
   "tensorboard>=2.14",
   "torch>=2.1",
-  "icecream>=2.1",
 ]
+
+[project.optional-dependencies]
+bullet = ["pybullet>=3.2"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["gymnasium_env"]

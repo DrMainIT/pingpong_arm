@@ -1,5 +1,6 @@
 __credits__ = ["Kallinteris-Andreas"]
 
+from pathlib import Path
 from typing import Dict, Union
 
 import numpy as np
@@ -27,7 +28,7 @@ class BaunceEnv(MujocoEnv, utils.EzPickle):
 
     def __init__(
         self,
-        xml_file: str = "/Users/francesco/Desktop/pingpong/urdf/braccioLight/test3.xml",
+        xml_file: str = str(Path(__file__).resolve().parents[3] / "urdf" / "braccioLight" / "test3.xml"),
         frame_skip: int = 5,
         default_camera_config: Dict[str, Union[float, int]] = DEFAULT_CAMERA_CONFIG,
         reward_near_weight: float = 0.5,
@@ -48,9 +49,9 @@ class BaunceEnv(MujocoEnv, utils.EzPickle):
         self._reward_near_weight = reward_near_weight
         self._reward_control_weight = reward_control_weight
         self._reward_dist_weight = reward_dist_weight
-        
-        
-        
+
+
+
         observation_space = Box(low=-np.inf, high=np.inf, shape=(3,), dtype=np.float64)
 
         MujocoEnv.__init__(
@@ -92,7 +93,7 @@ class BaunceEnv(MujocoEnv, utils.EzPickle):
 
     def reset_model(self):
         qpos = self.init_qpos
-        
+
         qvel = self.init_qvel
         #qpos[2] = np.random.randint(3)
         #qpos[1] = np.random.randint(-2,2)

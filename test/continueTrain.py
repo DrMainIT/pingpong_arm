@@ -5,7 +5,7 @@ import gymnasium_env
 from icecream import ic
 
 # Crea l'ambiente di addestramento
-train_env = make_vec_env("gymnasium_env/Pusher-v0", n_envs=10)
+train_env = make_vec_env("gymnasium_env/PingPongEnv-v0", n_envs=10)
 
 # Carica il modello salvato
 model = PPO.load("ppo_pusherB", env=train_env)
@@ -22,7 +22,7 @@ model.save("ppo_pusher")
 train_env.close()
 
 # Valutazione: Con schermo
-eval_env = gym.make("gymnasium_env/Pusher-v0", render_mode="human")
+eval_env = gym.make("gymnasium_env/PingPongEnv-v0", render_mode="human")
 obs, _ = eval_env.reset()  # Scompatta la tupla
 episode_over = False
 for _ in range(10000):
@@ -36,4 +36,3 @@ for _ in range(10000):
     episode_over = terminated or truncated
     if episode_over:
         obs, _ = eval_env.reset()
-

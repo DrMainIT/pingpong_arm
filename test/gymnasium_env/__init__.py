@@ -7,8 +7,8 @@ register(
 
 
 register(
-    id="gymnasium_env/Pusher-v0",
-    entry_point="gymnasium_env.envs:PusherEnv",
+    id="gymnasium_env/PingPongEnv-v0",
+    entry_point="gymnasium_env.envs:PingPongEnv",
 )
 
 register(

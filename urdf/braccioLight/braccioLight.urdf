@@ -9,13 +9,13 @@
         <collision name="umirobot_l1">
             <origin xyz="0.000000 0.000000 0.000000" rpy="-3.141593 3.141593 -3.141593" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/braccioLight/piece1.stl" scale="0.01 0.01 0.01"/>
+                <mesh filename="file://piece1.stl" scale="0.01 0.01 0.01"/>
             </geometry>
         </collision>
         <visual name="umirobot_l1">
             <origin xyz="0.000000 0.000000 0.000000" rpy="-3.141593 3.141593 -3.141593" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/braccioLight/piece1.stl" scale="0.01 0.01 0.01"/>
+                <mesh filename="file://piece1.stl" scale="0.01 0.01 0.01"/>
             </geometry>
             <material name="robot_base_material">
                 <color rgba="1.000000 0.600000 0.000000 1.0" />
@@ -37,13 +37,13 @@
         <collision name="umirobot_l2_cover">
             <origin xyz="0.100000 0.000000 0.400000" rpy="0.000000 3.141593 -3.141593" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/braccioLight/piece2.stl" scale="0.01 0.01 0.01"/>
+                <mesh filename="file://piece2.stl" scale="0.01 0.01 0.01"/>
             </geometry>
         </collision>
         <visual name="umirobot_l2_cover">
             <origin xyz="0.100000 0.000000 0.400000" rpy="0.000000 3.141593 -3.141593" />
             <geometry>
-               <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/braccioLight/piece2.stl" scale="0.01 0.01 0.01"/>
+               <mesh filename="file://piece2.stl" scale="0.01 0.01 0.01"/>
             </geometry>
             <material name="umirobot_l2_cover_material">
                 <color rgba="1.000000 1.000000 1.000000 1.0" />
@@ -66,13 +66,13 @@
         <collision name="umirobot_l3">
             <origin xyz="0.000000 1.0000 -0.225000" rpy="1.570796 -3.141593 0" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/braccioLight/piece3.stl" scale="0.01 0.01 0.01"/>
+                <mesh filename="file://piece3.stl" scale="0.01 0.01 0.01"/>
             </geometry>
         </collision>
         <visual name="umirobot_l3">
             <origin xyz="0.000000 1.0000 -0.225000" rpy="1.570796 -3.141593 0" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/braccioLight/piece3.stl" scale="0.01 0.01 0.01"/>
+                <mesh filename="file://piece3.stl" scale="0.01 0.01 0.01"/>
             </geometry>
             <material name="umirobot_l3_material">
                 <color rgba="1.000000 0.600000 0.000000 1.0" />
@@ -95,13 +95,13 @@
         <collision name="umirobot_l4">
             <origin xyz="-0.75 -1.400000 0.0" rpy="3.141593 3.141593 3.141593" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/braccioLight/piece4.stl" scale="0.01 0.01 0.01" />
+                <mesh filename="file://piece4.stl" scale="0.01 0.01 0.01" />
             </geometry>
         </collision>
         <visual name="umirobot_l4">
             <origin xyz="-0.75 -1.400000 0.0" rpy="3.141593 3.141593 3.141593" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/braccioLight/piece4.stl" scale="0.01 0.01 0.01" />
+                <mesh filename="file://piece4.stl" scale="0.01 0.01 0.01" />
             </geometry>
             <material name="umirobot_l4_material">
                 <color rgba="1.000000 1.000000 1.000000 1.0" />
@@ -124,13 +124,13 @@
         <collision name="end_effector">
             <origin rpy="1.570796 -1.570796 0.000000" xyz="0.070000 0.756776 -0.563749" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/braccioLight/endEffector.stl" scale="0.5 0.5 0.5"/>
+                <mesh filename="file://endEffector.stl" scale="0.5 0.5 0.5"/>
             </geometry>
         </collision>
         <visual name="end_effector">
             <origin rpy="1.570796 -1.570796 0.000000" xyz="0.070000 0.756776 -0.563749" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/braccioLight/endEffector.stl" scale="0.5 0.5 0.5"/>
+                <mesh filename="file://endEffector.stl" scale="0.5 0.5 0.5"/>
             </geometry>
             <material name="end_effector_material">
                 <color rgba="1.000000 1.000000 1.000000 1.0" />

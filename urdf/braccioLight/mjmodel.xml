@@ -17,7 +17,7 @@
     <mesh name="piece3" file="piece3.stl" scale="0.01 0.01 0.01"/>
     <mesh name="piece4" file="piece4.stl" scale="0.01 0.01 0.01"/>
     <mesh name="endEffector" file="endEffector.stl" scale="0.5 0.5 0.5"/>
-    <mesh name="plane_mesh" file="/Users/francesco/Desktop/pingpong/urdf/table/tavoloGirato.stl" scale="2 2 2"/>
+    <mesh name="plane_mesh" file="../table/tavoloGirato.stl" scale="2 2 2"/>
   </asset>
 
   <worldbody>

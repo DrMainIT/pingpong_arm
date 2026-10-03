@@ -1,3 +1,4 @@
+from pathlib import Path
 import pybullet as p
 import pybullet_data
 import time
@@ -10,7 +11,7 @@ p.setAdditionalSearchPath(pybullet_data.getDataPath())
 
 # Set the gravity in the simulation
 p.setGravity(0, 0, -9.81)
-kuka_id = p.loadURDF("/Users/francesco/Desktop/pingpong/urdf/braccioLight/braccioLight.urdf", [0, 0, 0], useFixedBase=True)
+kuka_id = p.loadURDF(str(Path(__file__).resolve().parent / "urdf/braccioLight/braccioLight.urdf"), [0, 0, 0], useFixedBase=True)
 table_id = p.loadURDF("urdf/table/table.urdf", [3, 1, 0], useFixedBase=True, globalScaling=1.5)
 ball_id = p.loadURDF("urdf/ball.urdf", [2, 0, 1], useFixedBase=False)
 # Load the KUKA IIWA model

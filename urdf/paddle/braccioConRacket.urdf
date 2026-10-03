@@ -9,13 +9,13 @@
         <collision name="umirobot_l1">
             <origin rpy="-3.141593 3.141593 -3.141593" xyz="0.000000 0.000000 0.000000" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/paddle/braccioConRacket_robot_base_coll_1.dae" />
+                <mesh filename="file://braccioConRacket_robot_base_coll_1.dae" />
             </geometry>
         </collision>
         <visual name="umirobot_l1">
             <origin rpy="-3.141593 3.141593 -3.141593" xyz="0.000000 0.000000 0.000000" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/paddle/braccioConRacket_robot_base_vis_1.dae" />
+                <mesh filename="file://braccioConRacket_robot_base_vis_1.dae" />
             </geometry>
             <material name="robot_base_material">
                 <color rgba="1.000000 1.000000 1.000000 1.0" />
@@ -37,13 +37,13 @@
         <collision name="umirobot_l2_cover">
             <origin rpy="0.000000 3.141593 -3.141593" xyz="0.100000 0.000000 0.700000" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/paddle/braccioConRacket_umirobot_l2_cover_coll_1.dae" />
+                <mesh filename="file://braccioConRacket_umirobot_l2_cover_coll_1.dae" />
             </geometry>
         </collision>
         <visual name="umirobot_l2_cover">
             <origin rpy="0.000000 3.141593 -3.141593" xyz="0.100000 0.000000 0.700000" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/paddle/braccioConRacket_umirobot_l2_cover_vis_1.dae" />
+                <mesh filename="file://braccioConRacket_umirobot_l2_cover_vis_1.dae" />
             </geometry>
             <material name="umirobot_l2_cover_material">
                 <color rgba="1.000000 1.000000 1.000000 1.0" />
@@ -66,13 +66,13 @@
         <collision name="umirobot_l3">
             <origin rpy="0.000000 3.141593 -0.000000" xyz="0.000000 0.450000 -0.225000" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/paddle/braccioConRacket_umirobot_l3_coll_1.dae" />
+                <mesh filename="file://braccioConRacket_umirobot_l3_coll_1.dae" />
             </geometry>
         </collision>
         <visual name="umirobot_l3">
             <origin rpy="0.000000 3.141593 -0.000000" xyz="0.000000 0.450000 -0.225000" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/paddle/braccioConRacket_umirobot_l3_vis_1.dae" />
+                <mesh filename="file://braccioConRacket_umirobot_l3_vis_1.dae" />
             </geometry>
             <material name="umirobot_l3_material">
                 <color rgba="1.000000 1.000000 1.000000 1.0" />
@@ -95,13 +95,13 @@
         <collision name="umirobot_l4">
             <origin rpy="3.141593 3.141593 -3.141593" xyz="0.450000 0.000000 -0.000000" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/paddle/braccioConRacket_umirobot_l4_coll_1.dae" />
+                <mesh filename="file://braccioConRacket_umirobot_l4_coll_1.dae" />
             </geometry>
         </collision>
         <visual name="umirobot_l4">
             <origin rpy="3.141593 3.141593 -3.141593" xyz="0.450000 0.000000 -0.000000" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/paddle/braccioConRacket_umirobot_l4_vis_1.dae" />
+                <mesh filename="file://braccioConRacket_umirobot_l4_vis_1.dae" />
             </geometry>
             <material name="umirobot_l4_material">
                 <color rgba="1.000000 1.000000 1.000000 1.0" />
@@ -118,7 +118,7 @@
         <visual name="Racket">
             <origin rpy="-0.000000 3.141593 1.570796" xyz="-0.000000 -0.000000 0.175000" />
             <geometry>
-                <mesh filename="file:///Users/francesco/Desktop/pingpong/urdf/paddle/braccioConRacket_Racket_vis_1.dae" />
+                <mesh filename="file://braccioConRacket_Racket_vis_1.dae" />
             </geometry>
             <material name="Racket_material">
                 <color rgba="1.000000 1.000000 1.000000 1.0" />

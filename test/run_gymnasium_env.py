@@ -1,6 +1,6 @@
 import gymnasium
 import gymnasium_env
-env = gymnasium.make('gymnasium_env/Pusher-v0',
+env = gymnasium.make('gymnasium_env/PingPongEnv-v0',
                      render_mode='human')
 
 observation, info = env.reset()
@@ -13,7 +13,6 @@ for _ in range(10000):
         print("Terminated")
     if truncated:
         print("Truncated")
-    
     episode_over = terminated or truncated
     if episode_over:
         observation, info = env.reset()
